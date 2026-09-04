@@ -3,7 +3,7 @@ from tortoise.exceptions import IntegrityError
 import bcrypt
 
 from app.models.user import User
-from app.schemas.auth import SignupRequest, SignupResponse, LoginRequest, LoginResponse
+from app.schemas.auth import SignupRequest, SignupResponse, LoginRequest, LoginResponse, RefreshRequest
 
 from app.services.security import hash_password, verify_password, create_access_token, create_refresh_token
 
@@ -92,5 +92,43 @@ async def login(request: LoginRequest):
         token_type="bearer"
     )
 
+@router.post("/refresh")
+async def refresh(data: RefreshRequest):
+    try:
+        payload = decode_refresh_token(data.token)
+
+        user = User.get_or_none(id=payload['sub'])
+
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+
+        access_token = create_access_token(user.id, user.name, user.email)
+        refresh_token = create_refresh_token(user.id)
+
+        try:
+            user.access_token = access_token
+            user.refresh_token = refresh_token
+            await user.save()
+        except Exception as e:
+            print(e)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Internal server error while refreshing tokens"
+            )
+
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "token_type": "bearer"
+        }
+        
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
 
     

@@ -2,7 +2,7 @@ import bcrypt
 
 from datetime import datetime, timedelta, timezone
 import jwt
-from jwt.exceptions import InvalidTokenError
+from jwt.exceptions import InvalidTokenError, ExpiredSignatureError
 from app.config.settings import settings
 
 
@@ -39,6 +39,8 @@ def decode_token(token: str) -> dict | None:
         payload = jwt.decode(token, settings.jwt_secret, algorithm=[settings.jwt_algorithm],)
     except InvalidTokenError:
         raise ValueError("Invalid Token")
+    except  ExpiredSignatureError:
+        raise ValueError("Token Expired")
     
     if payload.get("type") != "access":
         raise ValueError("Invalid Token Type")
@@ -62,7 +64,9 @@ def decode_refresh_token(token: str) -> dict | None:
     try:
         payload = jwt.decode(token, settings.jwt_secret, algorithm=[settings.jwt_algorithm],)
     except InvalidTokenError:
-        raise ValueError("Invalid Token")
+        raise ValueError("Invalid Refresh Token")
+    except  ExpiredSignatureError:
+        raise ValueError("Refresh Token Expired")
     
     if payload.get("type") != "refresh":
         raise ValueError("Invalid Token Type")

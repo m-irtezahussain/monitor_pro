@@ -22,3 +22,6 @@ class LoginResponse(BaseModel):
     refresh_token: str
     token_type: str
 
+class RefreshRequest(BaseModel):
+    token: str
+
