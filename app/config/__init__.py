@@ -4,7 +4,6 @@ TORTOISE_ORM = {
     "connections": {
         "default": getenv("DATABASE_URL")
     },
-
     "apps": {
         "models": {
             "models": [

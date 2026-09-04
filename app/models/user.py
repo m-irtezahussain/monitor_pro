@@ -20,6 +20,10 @@ class User(Model):
         max_length=255
     )
 
+    access_token = fields.CharField(max_length=500, null=True, blank=True)
+    
+    refresh_token = fields.CharField(max_length=500, null=True, blank=True)
+
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
 
