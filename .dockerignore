@@ -1,0 +1,27 @@
+# Local and OS files
+**/.DS_Store
+._*
+**/._*
+
+# Python build artifacts
+**/__pycache__
+**/.venv
+**/.pytest_cache
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Version control & editor files
+**/.git
+**/.gitignore
+**/.vscode
+**/.idea
+
+# Docker files
+**/.dockerignore
+Dockerfile*
+docker-compose*
+compose.y*ml
+
+# Documentation
+README*.md
