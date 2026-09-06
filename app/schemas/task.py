@@ -12,3 +12,13 @@ class GetTasksResponse(BaseModel):
     model_config = ConfigDict(
         from_attributes=True
     )
+
+class CreateTaskRequest(BaseModel):
+    name: str
+    description: str | None
+    deadline: str
+
+class UpdateTaskRequest(BaseModel):
+    name:str
+    description:str | None
+    deadline:str

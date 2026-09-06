@@ -97,7 +97,7 @@ async def refresh(data: RefreshRequest):
     try:
         payload = decode_refresh_token(data.token)
 
-        user = User.get_or_none(id=payload['sub'])
+        user = await User.get_or_none(id=payload['sub'])
 
         if user is None:
             raise HTTPException(
