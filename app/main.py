@@ -1,5 +1,7 @@
 from contextlib import asynccontextmanager
 from tortoise.contrib.fastapi import RegisterTortoise
+from app.routers.auth import router as auth_router
+from app.routers.task import router as task_router
 from app.config import TORTOISE_ORM
 from fastapi import FastAPI
 
@@ -18,6 +20,9 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan
 )
+
+app.include_router(auth_router)
+app.include_router(task_router)
 
 @app.get("/")
 async def root():
