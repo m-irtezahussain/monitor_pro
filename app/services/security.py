@@ -62,6 +62,7 @@ def create_refresh_token(user_id: int) -> str:
 
 def decode_refresh_token(token: str) -> dict | None:
     try:
+        print("reached here")
         payload = jwt.decode(token, settings.jwt_secret, algorithm=[settings.jwt_algorithm],)
     except InvalidTokenError:
         raise ValueError("Invalid Refresh Token")

@@ -5,7 +5,7 @@ import bcrypt
 from app.models.user import User
 from app.schemas.auth import SignupRequest, SignupResponse, LoginRequest, LoginResponse, RefreshRequest
 
-from app.services.security import hash_password, verify_password, create_access_token, create_refresh_token
+from app.services.security import hash_password, verify_password, create_access_token, create_refresh_token, decode_refresh_token
 
 router = APIRouter(
     prefix="/api/v1/auth",
